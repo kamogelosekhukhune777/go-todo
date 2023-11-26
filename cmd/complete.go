@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -14,18 +11,23 @@ import (
 // completeCmd represents the complete command
 var completeCmd = &cobra.Command{
 	Use:   "complete",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "marks your task complete",
+	Long: `marks your task on your todo list as complete.
+	you can't complete two task at the same time, please one task at a time or else results in an error`,
 	Run: func(cmd *cobra.Command, args []string) {
-		intValue, _ := strconv.Atoi(args[0])
+		if len(args) > 1 {
+			fmt.Println("to many arguments, one at a time please") //error handling
+			return
+		}
+
+		intValue, err := strconv.Atoi(args[0])
+		if err != nil {
+			fmt.Println("Invalid input")
+			return
+		}
 		Todos.Complete(intValue)
 
-		err := Todos.Store(TodoFile)
+		err = Todos.Store(TodoFile)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)

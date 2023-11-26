@@ -8,7 +8,7 @@ const (
 	TodoFile = ".todos.json"
 )
 
-var Todos = &todo.Todos{}
+var Todos = &todo.Tasks{}
 
 func init() {
 	/*

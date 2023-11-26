@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -13,20 +10,18 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "adds a task to Todo list",
+	Long: `add: adds a task to you Todo List.
+	you can add as many tasks as you want`,
 	Run: func(cmd *cobra.Command, args []string) {
-		Todos.Add(args[0])
+		for _, task := range args {
+			Todos.Add(task)
 
-		err := Todos.Store(TodoFile)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err.Error())
-			os.Exit(1)
+			err := Todos.Store(TodoFile)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err.Error())
+				os.Exit(1)
+			}
 		}
 	},
 }

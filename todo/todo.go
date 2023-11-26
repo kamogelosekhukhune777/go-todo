@@ -19,21 +19,21 @@ type item struct {
 	CompletedAt time.Time
 }
 
-type Todos []item
+type Tasks []item
 
-func (t *Todos) Add(task string) {
+func (t *Tasks) Add(task string) {
 
-	todo := item{
+	Item := item{
 		Task:        task,
 		Done:        false,
 		CreatedAt:   time.Now(),
 		CompletedAt: time.Time{},
 	}
 
-	*t = append(*t, todo)
+	*t = append(*t, Item)
 }
 
-func (t *Todos) Complete(index int) error {
+func (t *Tasks) Complete(index int) error {
 	ls := *t
 	if index <= 0 || index > len(ls) {
 		return errors.New("invalid index")
@@ -45,7 +45,7 @@ func (t *Todos) Complete(index int) error {
 	return nil
 }
 
-func (t *Todos) Delete(index int) error {
+func (t *Tasks) Delete(index int) error {
 	ls := *t
 	if index <= 0 || index > len(ls) {
 		return errors.New("invalid index")
@@ -56,7 +56,7 @@ func (t *Todos) Delete(index int) error {
 	return nil
 }
 
-func (t *Todos) Load(filename string) error {
+func (t *Tasks) Load(filename string) error {
 	file, err := os.ReadFile(filename)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -76,7 +76,7 @@ func (t *Todos) Load(filename string) error {
 	return nil
 }
 
-func (t *Todos) Store(filename string) error {
+func (t *Tasks) Store(filename string) error {
 
 	data, err := json.Marshal(t)
 	if err != nil {
@@ -86,7 +86,7 @@ func (t *Todos) Store(filename string) error {
 	return os.WriteFile(filename, data, 0644)
 }
 
-func (t *Todos) Print() {
+func (t *Tasks) Print() {
 
 	table := simpletable.New()
 
@@ -130,7 +130,7 @@ func (t *Todos) Print() {
 	table.Println()
 }
 
-func (t *Todos) CountPending() int {
+func (t *Tasks) CountPending() int {
 	total := 0
 	for _, item := range *t {
 		if !item.Done {

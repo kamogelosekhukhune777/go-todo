@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -14,18 +11,29 @@ import (
 // delCmd represents the del command
 var delCmd = &cobra.Command{
 	Use:   "del",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "deletes your task",
+	Long: `deletes your task from your Todo list. 
+	you can delete one task at a time.
+	index you provide must be within the range of you Todo List.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		intValue, _ := strconv.Atoi(args[0])
+		if len(args) > 1 {
+			fmt.Println("To many argumnets only the first one will be executed")
+		}
+
+		intValue, err := strconv.Atoi(args[0])
+		//check: idx > len(args)
+		if err != nil { //proper error handling
+			fmt.Println("input not valid")
+		}
+
+		if intValue > len(args) && intValue < 0 {
+			fmt.Println("index out range of your todo list")
+			return
+		}
+
 		Todos.Delete(intValue)
 
-		err := Todos.Store(TodoFile)
+		err = Todos.Store(TodoFile)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
